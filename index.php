@@ -1,17 +1,13 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
+
 use PHPMailer\PHPMailer\Exception;
 
 require_once 'vendor/autoload.php';
+require (dirname(__FILE__).'/config/connect_Db.php');
+
 
 $button = true;
-$connection =  mysqli_connect('127.0.0.1','root','','nixcourse');
 
-if( $connection == false ){
-    echo "Yoy lose<br>";
-    echo mysqli_connect_error();
-    exit();
-}
 function validate_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -148,8 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				<div>
 				</div>
 				<p> <h4>Gender</h4></p>
-                <input type="radio" name="gender" checked> Male
-                <input type="radio" name="gender"> Female
+                <input type="radio" name="gender" value="Male" checked> Male
+                <input type="radio" name="gender" value="Female"> Female
                 </div>
 			<div class="clear"></div>
 
@@ -226,26 +222,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <pre>
         <div class="div">
 <?php
+require (dirname(__FILE__)."/config/validate_config.php");
 
-$name = $_POST[full_name][first_n] .' '. $_POST[full_name][middle_n].' '.$_POST[full_name][last_n];
-$email = $_POST[email];
-$birth_date = $_POST[birth_data][year] .'-'. $_POST[birth_data][month].'-'.$_POST[birth_data][day];
-$gender = $_POST[gender];
-$address = $_POST[full_address][country].' '.$_POST[full_address][city].' '.$_POST[full_address][street_address].' '.$_POST[full_address][zip_code];
-$course = $_POST[course];
-$comment = $_POST[textarea];
-
-foreach ($_FILES["image"]["error"] as $key => $error)
-{
-    if ($error == UPLOAD_ERR_OK) {
-        $tmp_name = $_FILES["image"]["tmp_name"][$key];
-        $uploadfile = 'image/'.basename($_FILES["image"]["name"][$key]);
-        if (!(move_uploaded_file($tmp_name, $uploadfile))) {
-            echo "Возможная атака с помощью файловой загрузки!\n";
-            $button = false;
-        }
-    }
-}
 
 //if (strcasecmp($_POST[full_address][country], "Ukraine") == 0) {
 //    $_country_id = 1;
@@ -272,53 +250,19 @@ $result = $button;// mysqli_query($connection," INSERT INTO regform ( name, birt
 //			") or die("Error " . mysqli_error($connection));
 if($result)
 {
-    ?>
-        <p>Successfully</p>
-        <p>You have registered <?php echo $name; ?></p>
-
+    try {
+        ?>
+            <p>Successfully</p>
+            <p>You have registered <?php echo $name; ?></p>
     <?php
+
+        require_once (dirname(__FILE__)."/config/send.php");
+    } catch (Exception $e) {
+        echo "Mailer Error". $mail->ErrorInfo;
+}
 }
 ?>
 </pre>
-
-
-<?php
-try {
-$mail = new PHPMailer(true);
-$mail->From = "myblogcodeactivation@gmail.com";
-$mail->FromName = "TEST";
-
-$mail->addAddress("yevhenii.shalko@nure.ua", "Student");
-
-$mail->addReplyTo("myblogcodeactivation@gmail.com", "Reply");
-
-$mail->isHTML(true);
-
-$mail->Subject = "Student Form Registration";
-$mail->Body = "Hello,". $name.'<br>'.
-    "You filled out the form, here is your data.<br>
-     Email: ".$email."<br>
-     Birth data: ".$birth_date."<br>
-     Gender: ".$gender."<br>
-     Your address: ".$address."<br>
-     Course: ".$course."<br>
-     Your comment: ".$comment."<br>
-     Also attached your files to the message<br>"
-;
-$mail->AltBody = "This is the plain text version of the email content";
-
-    foreach ($_FILES["image"]["name"] as $key => $name)
-    {
-        $mail->addAttachment('image/'.basename($_FILES["image"]["name"][$key]));
-    }
-    if(!($button == false)){
-        $mail->send();
-        echo "Message has been sent successfully";
-    }
-} catch (Exception $e) {
-    echo "Mailer Error". $mail->ErrorInfo;
-}
-?>
 </div>
 </body>
 </html>
