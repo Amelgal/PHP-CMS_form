@@ -1,12 +1,21 @@
 <?php
+//if ($_GET['use'] == "1"){
+//setcookie("use", $_GET['use'],time() + 60  , '/');
+//};
+
+setcookie("forma", serialize($_POST), time() + 600, '/');
+
 
 use PHPMailer\PHPMailer\Exception;
+
+$cookies = unserialize(stripslashes($_COOKIE['forma']));
+
 
 require_once 'vendor/autoload.php';
 require (dirname(__FILE__).'/config/connect_Db.php');
 
 
-$button = true;
+    $button = true;
 
 function validate_input($data) {
     $data = trim($data);
@@ -15,252 +24,79 @@ function validate_input($data) {
     $data = urldecode($data);
     return $data;
 }
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8"/>
-	<title> Registration </title>
-	<link rel="stylesheet" href="css/style.css">
-</head>
-
-<body>
-
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!empty($_POST[full_name][first_n]) and !empty($_POST[full_name][middle_n]) and !empty($_POST[full_name][last_n])) {
-        $full_name = validate_input($_POST[full_name][first_n]) . ' ' . validate_input($_POST[full_name][middle_n]) . ' ' . validate_input($_POST[full_name][last_n]);
-    } else {
-        $nameError = "Имя обязательно";
-        $button = false;
-    }
-    if (!preg_match("~^[a-яA-Я ]*$~",$full_name)) {
-        $nameError = "Разрешены только буквы";
-        $_POST[full_name][first_n] = "";
-        $_POST[full_name][middle_n] = "";
-        $_POST[full_name][last_n] = "";
-        $button = false;
-    }
-
-    if (!empty($_POST[email]))
-    {
-        $email = validate_input($_POST[email]);
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-        {
-            $emailError = "Invalid email format";
-            $button = false;
-        }
-    } else {
-        $emailError = "Email обязательно";
-    }
-    if ($_POST[full_address][country] == 'Please Select')
-    {
-        $countryError = "Выберите страну";
-        $button = false;
-    }
-    if (!empty($_POST[full_address][city]) and !empty($_POST[full_address][zip_code]) and !empty($_POST[full_address][street_address])) {
-        $full_address = validate_input($_POST[full_address][city]) . ' ' . validate_input($_POST[full_address][zip_code]) . ' ' . validate_input($_POST[full_address][street_address]);
-    }
-    if (!preg_match("~^[a-яA-Я./ ]*$~",$full_address)) {
-        $_POST[full_address][city] = "";
-        $_POST[full_address][zip_code] = "";
-        $_POST[full_address][street_address] = "";
-    }
-}
-
-?>
-	
-	<form method="POST" enctype='multipart/form-data' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-		<fieldset>
-			<div class="c1">
-				<p><h1>Student Registataion Form</h1>Fill out the form carefully for registrarion</p>
-			</div>
-
-			<div class="c1">
-				<h4>Student Name</h4>
-				<div class="flex">
-					<div class="input">
-						<input type="text" name="full_name[first_n]" value="<?php echo $_POST[full_name][first_n] ?>">
-						<p>First Name</p>
-					</div>
-					<div class="input">
-						<input type="text"  name="full_name[middle_n]" value="<?php echo $_POST[full_name][middle_n] ?>">
-						<p>Middle Name</p>
-					</div>
-					<div class="input">
-						<input type="text"  name="full_name[last_n]"value="<?php echo $_POST[full_name][last_n] ?>">
-						<p>Last Name</p>
-					</div>
-                    <span class="error">* <?php echo $nameError;?></span>
-				</div>
-			</div>
-			<div class="clear"></div>
-
-            <div class="c1">
-                <h4>Email</h4>
-                    <div class="input">
-                        <input type="text"  name="email" value="<?php echo $_POST[email] ?>">
-                        <span class="error">* <?php echo $emailError;?></span>
-                        <p>Email</p>
-
-                    </div>
-                </div>
-            </div>
-            <div class="clear"></div>
-
-			<div class="c1">
-				<p> <h4>Birth day</h4></p>
-				<div class="flex">
-                    <div class="input">
-                        <select name="birth_data[day]">
-                            <option hidden="true"> </option>
-                            <option> 5</option>
-                            <option> 6</option>
-                            <option> 7</option>
-                        </select>
-                        <p>Day</p>
-                    </div>
-					<div class="input">
-						<select name="birth_data[month]">
-							<option hidden="true"> </option>
-							<option> May</option>	
-							<option> June</option>
-							<option> July</option>
-						</select>
-						<p>Month</p>
-					</div>
-					<div class="input">
-						<select name="birth_data[year]">
-							<option hidden="true"> </option>
-							<option> 1999</option>
-							<option> 2000</option>
-							<option> 2001</option>
-						</select>
-						<p>Year</p>
-					</div>
-				</div>	
-
-
-				<div>
-				</div>
-				<p> <h4>Gender</h4></p>
-                <input type="radio" name="gender" value="Male" checked> Male
-                <input type="radio" name="gender" value="Female"> Female
-                </div>
-			<div class="clear"></div>
-
-
-			<div>
-				<h4>Adress</h4>
-				<div class="colum"> 
-					<div class="flex">
-						<div class="input">
-							<input type="text" name="full_address[city]" value="<?php echo $_POST[full_address][city]?>">
-							<p>City</p>
-						</div>
-						<div class="input">
-							<input size="22%" type="text" name="full_address[street_address]" value="<?php echo $_POST[full_address][street_address]?>">
-							<p>Street Address</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="colum">
-					<div class="flex">
-						<div class="input">
-							<input type="text" name="full_address[zip_code]" value="<?php echo $_POST[full_address][zip_code]?>">
-							<p>Postal/Zip Code</p>
-						</div>
-						<div class="input">
-							<select name="full_address[country]"">
-								<option hidden="true"> Please Select</option>
-								<option> Ukraine</option>
-								<option> USA</option>
-								<option> Japan</option>
-								<option> England</option>
-							</select>
-                            <span class="error">* <?php echo $countryError;?></span>
-							<p>Country</p>
-						</div>
-					</div>
-				</div>
-			</div>
-
-
-			<div>
-				<h4>Courses</h4>
-				<select name="course" value="<?php echo $_POST[course]?>">
-					<option hidden="truie"></option>>
-					<option>Windows 10</option>
-					<option>Windows 8</option>
-					<option>Windows 7</option>
-					<option>Windows Xp</option>
-				</select>
-			</div>
-
-            <div>
-                <h4>Send files</h4>
-                <input type="file" accept="image/bmp,image/jpeg,image/png" name="image[]">
-                <input type="file" accept="image/bmp,image/jpeg,image/png" name="image[]">
-                <input type="file" accept="image/bmp,image/jpeg,image/png" name="image[]">
-            </div>
-		</div>
-
-
-		<div>
-			<h4>Additional Comments</h4>
-			<textarea cols="100" rows="10" name="textarea"></textarea>
-		</div>
-
-
-		<input class="button1" type="submit" value="Submit Application">
-		<input class="button2" type="reset"  value="Clear Fields">
-	</fieldset>
-</form>
-    <hr/>
-
-    <pre>
-        <div class="div">
-<?php
 require (dirname(__FILE__)."/config/validate_config.php");
 
 
-//if (strcasecmp($_POST[full_address][country], "Ukraine") == 0) {
-//    $_country_id = 1;
-//}
-//if (strcasecmp($_POST[full_address][country], "USA") == 0) {
-//    $_country_id =2;
-//}
-//if (strcasecmp($_POST[full_address][country], "Japan") == 0) {
-//    $_country_id =3;
-//}
-//if (strcasecmp($_POST[full_address][country], "England") == 0) {
-//    $_country_id =4;
-//}
 
-$result = $button;// mysqli_query($connection," INSERT INTO regform ( name, birth_date, gender, adress, cours,country_id, comment) VALUES
-//			('".$_POST[full_name][first_n] .' '. $_POST[full_name][middle_n].' '.$_POST[full_name][last_n]."',
-//			'".$_POST[birth_data][year] .'-'. $_POST[birth_data][month].'-'.$_POST[birth_data][day]."' ,
-//			'".$_POST[gender]."',
-//			'".$_POST[full_address][street_address].' '.$_POST[full_address][city].'  '.$_POST[full_address][zip_code]."',
-//			'".$_POST[course]."',
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title> Registration </title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<?php
+//var_dump($_GET);
+//if (empty($_COOKIE['use'])):?>
+<!--<form method="GET" action="--><?php //echo htmlspecialchars($_SERVER["PHP_SELF"]);?><!--">-->
+<!--<input type="submit" name="Save" value="Ok">-->
+<!--<input type="submit" name="Close" value="Not Ok">-->
+<!--<input type="hidden" name="use" value="1">-->
+<!--</form>-->
+<?php
+//  if($_GET["Save"] == 'Ok'):
+//  var_dump($_GET);
+//  require (dirname(__FILE__)."/form.php");
+//  endif;
+?>
+<?php
+//else:
+              require (dirname(__FILE__)."/form.php");
+//endif;
+?>
+    <hr/>
+    <pre>
+        <div class="div">
+<?php
+
+//var_dump($form_data);
+//var_dump($cook);
+/*if (strcasecmp($_POST[full_address][country], "Ukraine") == 0) {
+    $_country_id = 1;
+}
+if (strcasecmp($_POST[full_address][country], "USA") == 0) {
+    $_country_id =2;
+}
+if (strcasecmp($_POST[full_address][country], "Japan") == 0) {
+    $_country_id =3;
+}
+if (strcasecmp($_POST[full_address][country], "England") == 0) {
+    $_country_id =4;
+}*/
+
+$result = $button; //mysqli_query($connection," INSERT INTO regform ( name, birth_date, gender, adress, cours,country_id, comment) VALUES
+//			('".$name."',
+//            '".$birth_date."',
+//			'".$gender."',
+//			'".$address."',
+//			'".$course."',
 //			'".$_country_id."',
-//			'".$_POST[textarea]."'
+//			'".$comment."'
 //			)
-//			") or die("Error " . mysqli_error($connection));
+//			")or die("Error " . mysqli_error($connection));
 if($result)
 {
     try {
-        ?>
-            <p>Successfully</p>
-            <p>You have registered <?php echo $name; ?></p>
-    <?php
-
-        require_once (dirname(__FILE__)."/config/send.php");
+        require_once (dirname(__FILE__)."/config/sendMail.php");
     } catch (Exception $e) {
         echo "Mailer Error". $mail->ErrorInfo;
 }
 }
+
 ?>
 </pre>
 </div>
