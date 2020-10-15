@@ -1,7 +1,7 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
+/*use PHPMailer\PHPMailer\PHPMailer;
 
-require (dirname(__FILE__)."/sendMail_config.php");
+require(dirname(__FILE__) . "/sendMail_config.php");
 
 $i=0;
 
@@ -18,7 +18,7 @@ $mail->isHTML(true);
 $mail->Subject = "Student Form Registration";
 
 ob_start();
-require (dirname(__FILE__)."/message.php");
+require(dirname(__FILE__) . "/message.php");
 $body = ob_get_contents();
 ob_end_clean();
 //var_dump($body);
@@ -33,7 +33,8 @@ if(!empty($file["image"]["name"])){
     {
         if ($error == UPLOAD_ERR_OK) {
             $tmp_name = $file["image"]["tmp_name"][$key];
-            $uploadfile = 'image/'.basename($file["image"]["name"][$key]);
+            $uploadfile = (dirname(__FILE__)).'/../image/'.basename($file["image"]["name"][$key]);
+            //var_dump($uploadfile);
             if (move_uploaded_file($tmp_name, $uploadfile)) {
                 $i++;
             } else {
@@ -57,3 +58,4 @@ if(!($button == false)){
     <?php
     echo "Message has been sent successfully";
 }
+*/
