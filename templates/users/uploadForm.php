@@ -1,4 +1,5 @@
 <?php
+
 unset($_GET['route']);
 setcookie("GET", serialize($_GET), 0, '/');
 

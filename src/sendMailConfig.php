@@ -1,5 +1,5 @@
 <?php
-
+//config для class EmailSender
 return [
     'config' => [
         'sender' => [

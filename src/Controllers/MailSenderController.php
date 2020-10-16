@@ -1,25 +1,21 @@
 <?php
-
+// Этот класс отвечает за вызов PHP MAiler по запросу от cron на OpenServer, а также обновление данных БД после этого
 
 namespace Controllers;
 
 use PHPMailer\PHPMailer\Exception;
 use Services\Db;
 use Services\EmailSender;
-//use View\View;
 
 class MailSenderController
 {
-  //  private $view;
     private $sender;
     private $db;
 
     public function __construct()
     {
-        //$this->view = new View(__DIR__ . '/../../templates');
         $this->db = new Db();
         $this->sender = new EmailSender();
-        $this->sendMail();
     }
 
     function sendMail()
@@ -30,10 +26,9 @@ class MailSenderController
         ]
         );
 
-        var_dump($dbResult);
+        //var_dump($dbResult);
         foreach ($dbResult as $key){
             try {
-                //var_dump($key['id']);
                 $sentResult=$this->sender->sender($key);
                 if ($sentResult){
                     $this->db->query( 'UPDATE `regform` SET `send_confirmed` = :sendconfirmed WHERE `regform`.`id` = :id;',

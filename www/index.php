@@ -1,8 +1,10 @@
 <?php
+    //  функцию автозагрузки
     spl_autoload_register(function (string $className) {
         require_once __DIR__ . '/../src/' . $className . '.php';
     });
 
+    // р    оутинг
     $route = $_GET['route'] ?? '';
     $routes = require __DIR__ . '/../src/routes.php';
 
@@ -26,6 +28,7 @@
     $actionName = $controllerAndAction[1];
 
     $controller = new $controllerName();
+    //передаст элементы массива в качестве аргументов методу в том порядке, в котором они находятся в массиве
     $controller->$actionName(...$matches);
 
 

@@ -1,5 +1,5 @@
 <?php
-
+//Класс отвечающий за содержимое сообщения, а также его оправку по email
 
 namespace Services;
 
@@ -37,36 +37,22 @@ class EmailSender
         require (dirname(__FILE__)."/../../templates/mail/message.php");
         $body = ob_get_contents();
         ob_end_clean();
-        var_dump($body);
         $mail->Body = $body;
         $mail->AltBody = "This is the plain text version of the email content";
 
-        $file = $_FILES;
+        $file = [
+            'image'=>[
+                'image_1' => $sentData['image_1'],
+                'image_2' => $sentData['image_2'],
+                'image_3' => $sentData['image_3'],
+            ]
+        ];
 
-        if(!empty($file["image"]["name"])){
-
-            foreach ($file["image"]["error"] as $key => $error)
+            foreach ($file['image'] as $key )
             {
-                if ($error == UPLOAD_ERR_OK) {
-                    $tmp_name = $file["image"]["tmp_name"][$key];
-                    $uploadfile = (dirname(__FILE__)).'/../../image/'.basename($file["image"]["name"][$key]);
-                    //var_dump($uploadfile);
-                    if (move_uploaded_file($tmp_name, $uploadfile)) {
-                        $i++;
-                    } else {
-                        echo "Возможная атака с помощью файловой загрузки!\n";
-                        $button = false;
-                    }
-                }
+                $mail->addAttachment('../image/'.basename($key));
             }
-            echo "Успешно переданых изображений ".$i."\n";
 
-
-            foreach ($file["image"]["name"] as $key => $name)
-            {
-                $mail->addAttachment('../image/'.basename($file["image"]["name"][$key]));
-            }
-        }
         if($button != false){
             echo "It's done";
             $result = $mail->send();

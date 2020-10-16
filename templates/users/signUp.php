@@ -1,9 +1,8 @@
 <?php
-
-include __DIR__ . '/../header.php';?>
-<?php
-
+// шаблон для формы
+include __DIR__ . '/../header.php';
 include_once __DIR__ . '/uploadForm.php';
+
 ?>
 
 

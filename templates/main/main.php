@@ -1,4 +1,6 @@
-<?php include __DIR__ . '/../header.php'; ?>
+<?php
+// шаблон для главной странички
+include __DIR__ . '/../header.php'; ?>
 
 <?= "Here is main page of the site "?>
 

@@ -1,11 +1,11 @@
 <?php
-
+// В этом классе происходит обрадотка запроса с формы, с последующей загрухкой в БД ( если не выявлены ошибки)
+// также устанавливаются cookies
 
 namespace Controllers;
 
 
 use Exceptions\InvalidArgumentException;
-//use PHPMailer\PHPMailer\Exception;
 use Models\Users\User;
 use Services\Db;
 use Services\EmailSender;
@@ -17,6 +17,7 @@ class UsersController
     private $view;
     private $sender;
     private $db;
+    private $successfulImage;
 
     public function __construct()
     {
@@ -60,6 +61,7 @@ class UsersController
                     }
                     $form_data['course'] = $allCourses;
                 }
+                //var_dump($_FILES);
                 $user = User::signUp($form_data);
                 //var_dump($user);
             } catch (InvalidArgumentException $e) {
@@ -67,18 +69,37 @@ class UsersController
                 return;
             }
             if ($user instanceof User) {
-                //$this->insert($form_data);
-                $this->view->renderHtml('users/sendSuccessful.php',['nameUser' => $user->getFullUserName()],$user->getValidateConfirmed());
+                $this->insert($form_data, $_FILES);
+                $this->view->renderHtml('users/sendSuccessful.php',['nameUser' => $user->getFullUserName(),'successfulImage'=>$this->successfulImage],$user->getValidateConfirmed());
                 //$this->sendMail();
                 return;
             }
         }
         $this->view->renderHtml('users/signUp.php', []);
     }
-    public function insert(array $form_data)
+
+    public function insert(array $form_data, array $file_data)
     {
-        $this->db->query('INSERT INTO `regform` (`name`, `birth_date`, `gender`, `adress`, `cours`, `country_id`, `comment`,`email`)
-                                    VALUES ( :name, :birth_date,  :gender,  :adress, :cours, :country_id, :comment, :email);',
+        $this->successfulImage = 0;
+        //var_dump($form_data);
+        if(!empty($file_data["image"]["name"])){
+
+            foreach ($file_data["image"]["error"] as $key => $error)
+            {
+                if ($error == UPLOAD_ERR_OK) {
+                    $tmp_name = $file_data["image"]["tmp_name"][$key];
+                    $uploadfile = (dirname(__FILE__)).'/../../image/'.basename($file_data["image"]["name"][$key]);
+                    //var_dump($uploadfile);
+                    if (move_uploaded_file($tmp_name, $uploadfile)) {
+                        $this->successfulImage++;
+                    } else {
+                        echo "Возможная атака с помощью файловой загрузки!\n";
+                    }
+                }
+            }
+        }
+        $this->db->query('INSERT INTO `regform` (`name`, `birth_date`, `gender`, `adress`, `cours`, `country_id`, `comment`,`email`,`image_1`,`image_2`,`image_3`)
+                                 VALUES ( :name, :birth_date,  :gender,  :adress, :cours, :country_id, :comment, :email, :image_1, :image_2, :image_3);',
             [
                 ':name' => $form_data['name'],
                 ':birth_date' => $form_data['birthDate'],
@@ -88,11 +109,14 @@ class UsersController
                 ':country_id' => $form_data['countryId'],
                 ':comment' => $form_data['comment'],
                 ':email' => $form_data['email'],
-
+                ':image_1' => $file_data["image"]["name"][0],
+                ':image_2' => $file_data["image"]["name"][1],
+                ':image_3' => $file_data["image"]["name"][2],
             ], static::class
         );
+
     }
-    public function sendMail()
+    /*public function sendMail()
     {
         $dbResult = $this->db->query('SELECT * FROM `regform`ORDER BY id DESC LIMIT 1;');
         try {
@@ -101,5 +125,5 @@ class UsersController
             echo "Mailer Error". $mail->ErrorInfo;
         }
         var_dump($sentResult);
-    }
+    }*/
 }
