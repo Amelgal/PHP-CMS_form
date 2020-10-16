@@ -5,7 +5,7 @@ namespace Controllers;
 
 
 use Exceptions\InvalidArgumentException;
-use PHPMailer\PHPMailer\Exception;
+//use PHPMailer\PHPMailer\Exception;
 use Models\Users\User;
 use Services\Db;
 use Services\EmailSender;

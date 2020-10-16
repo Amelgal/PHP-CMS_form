@@ -1,16 +1,15 @@
 <?php
-include __DIR__ . '/../header.php';?>
 
-    <?php if (!empty($_COOKIE['forma']) and $_GET['get']!="1"): ?>
-        <form method="GET" action="<?= $_SERVER[REDIRECT_URL]?>">
-            <input type="submit" name="Save" value="Ok">
-            <input type="submit" name="Close" value="Not Ok">
-            <input type="hidden" name="get" value="1">
-        </form>
-    <?php endif; ?>
+include __DIR__ . '/../header.php';?>
+<?php
+
+include_once __DIR__ . '/uploadForm.php';
+?>
+
+
 
 <?php
-    if ($_GET['Save'] == 'Ok'):
+    if ($cookiesGet['Save'] == 'Ok'):
         $cookies = unserialize(stripslashes($_COOKIE['forma']));
     endif;
 if (!empty($error)): ?>

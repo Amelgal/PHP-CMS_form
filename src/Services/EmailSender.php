@@ -17,10 +17,10 @@ class EmailSender
     }
     public function sender(array $sentData)
     {
+
         require_once '../vendor/autoload.php';
         $button = true;
         $i=0;
-        $sentData = $sentData[0];
         $mail = new PHPMailer(true);
         $mail->From = $this->senderOptions['sender']['email'];
         $mail->FromName = "TEST";
@@ -71,7 +71,8 @@ class EmailSender
             echo "It's done";
             $result = $mail->send();
             var_dump($result);
+            return $result;
         }
-        return true;//$mail->send();
+        return false;
     }
 }
