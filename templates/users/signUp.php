@@ -2,14 +2,7 @@
 // шаблон для формы
 include __DIR__ . '/../header.php';
 include_once __DIR__ . '/uploadForm.php';
-var_dump($_SERVER[REDIRECT_URL]);
-var_dump($_POST);
 
-?>
-
-
-
-<?php
     if ($cookiesGet['Save'] == 'Ok'):
         $cookies = unserialize(stripslashes($_COOKIE['forma']));
     endif;
@@ -125,7 +118,6 @@ if (!empty($error)): ?>
                             <option> Japan</option>
                             <option> England</option>
                         </select>
-                        <span class="error">* <?= $countryError;?></span>
                         <p>Country</p>
                     </div>
                 </div>
