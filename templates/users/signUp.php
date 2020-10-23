@@ -1,18 +1,22 @@
 <?php
 // шаблон для формы
 include __DIR__ . '/../header.php';
-include_once __DIR__ . '/uploadForm.php';
-
-    if ($cookiesGet['Save'] == 'Ok'):
+unset($_GET['route']);
+if (empty($_GET) and !empty($_COOKIE['forma'])){
+    include_once __DIR__ . '/uploadForm.php';
+}
+    if( !($_GET['Close']=='Not Ok')) {
         $cookies = unserialize(stripslashes($_COOKIE['forma']));
-    endif;
-if (!empty($error)): ?>
-    <div style="background-color: red;padding: 5px;margin: 15px"><?= $error ?></div>
-<?php endif; ?>
+    }
+    if (!empty($_GET)):
+        if (!empty($error)): ?>
+            <div style="background-color: red;padding: 5px;margin: 15px"><?= $error ?></div>
+        <?php endif; ?>
+
 <form method="POST" enctype='multipart/form-data' action="<?=$_SERVER[REDIRECT_URL]?>">
     <fieldset>
         <div class="c1">
-            <p><h1>Student Registataion Form</h1>Fill out the form carefully for registrarion</p>
+            <p><h1>Student Registration Form</h1>Fill out the form carefully for registration</p>
         </div>
 
         <div class="c1">
@@ -157,5 +161,7 @@ if (!empty($error)): ?>
     </fieldset>
 </form>
 
-<?php include __DIR__ . '/../footer.php'; ?>
+<?php
+    endif;
+    include __DIR__ . '/../footer.php'; ?>
 <?php
