@@ -6,7 +6,6 @@ class Db
 {
     /** @var \PDO */
     private $pdo;
-
     private $connection;
 
     public function __construct()

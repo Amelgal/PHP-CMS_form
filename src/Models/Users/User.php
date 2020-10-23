@@ -3,10 +3,13 @@
 
 namespace Models\Users;
 
-use Exceptions\InvalidArgumentException;
+use Models\DbRequest;
 
 class User
 {
+    /** @var string */
+    private $successfullImageCount;
+
     /** @var string */
     private $fullUserName;
 
@@ -40,6 +43,35 @@ class User
     /** @var bool */
     private $validateConfirmed = false;
 
+    private $request;
+
+    public function __construct(array $userData)
+    {
+        $this->request = new DbRequest();
+        $this->fullUserName = $userData['name'];
+        $this->email = $userData['email'];
+        $this->addressUser = $userData['address'];
+        $this->birthDay = $userData['birthDate'];
+        $this->course = $userData['course'];
+        $this->gender = $userData['gender'];
+        $this->comment = $userData['comment'];
+        $this->countryId = $userData['countryId'];
+        $this->isConfirmed = false;
+        $this->createdAt = date("F j, Y, g:i a");
+        $this->validateConfirmed = true;
+
+        $this->successfullImageCount = $this->request->insert($userData);
+
+        return $this->validateConfirmed;
+    }
+    /**
+     * @return string
+     */
+    public function getValidateConfirmed(): bool
+    {
+        return $this->validateConfirmed;
+    }
+
     /**
      * @return string
      */
@@ -48,51 +80,11 @@ class User
         return $this->fullUserName;
     }
 
-    public static function signUp(array $userData) : User
-    {
-        //var_dump($userData);
-        if (empty($userData['name']) or $userData['name'] == '  ') {
-            throw new InvalidArgumentException('Не передан nickname');
-        }
-        if (!preg_match('~^[a-zA-Z ]*$~', $userData['name'])) {
-            throw new InvalidArgumentException('Nickname может состоять только из символов латинского алфавита');
-        }
-        if (empty($userData['email'])) {
-            throw new InvalidArgumentException('Не передан email');
-        }
-        if (!filter_var($userData['email'], FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException('Email некорректен');
-        }
-        if (empty($userData['birthDate']) or $userData['birthDate'] == '--') {
-            throw new InvalidArgumentException('Не передан birth day');
-        }
-        if (empty($userData['address']) or $userData['address'] == 'Please Select   ') {
-            throw new InvalidArgumentException('Не передан address');
-        }
-        if (empty($userData['course'])) {
-            throw new InvalidArgumentException('Не передан course');
-        }
-
-        $user = new User();
-        $user->fullUserName = $userData['name'];
-        $user->email = $userData['email'];
-        $user->addressUser = $userData['address'];
-        $user->birthDay = $userData['birthDate'];
-        $user->course = $userData['course'];
-        $user->gender = $userData['gender'];
-        $user->comment = $userData['comment'];
-        $user->countryId = $userData['countryId'];
-        $user->isConfirmed = false;
-        $user->createdAt = date("F j, Y, g:i a");
-        $user->validateConfirmed = true;
-
-        return $user;
-    }
     /**
      * @return string
      */
-    public function getValidateConfirmed(): bool
+    public function getSuccessfullImageCount(): string
     {
-        return $this->validateConfirmed;
+        return $this->successfullImageCount;
     }
 }

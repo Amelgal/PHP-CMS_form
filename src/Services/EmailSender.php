@@ -20,7 +20,6 @@ class EmailSender
 
         require_once '../vendor/autoload.php';
         $button = true;
-        $i=0;
         $mail = new PHPMailer(true);
         $mail->From = $this->senderOptions['sender']['email'];
         $mail->FromName = "TEST";
@@ -56,7 +55,7 @@ class EmailSender
         if($button != false){
             echo "It's done";
             $result = $mail->send();
-            var_dump($result);
+            //var_dump($result);
             return $result;
         }
         return false;

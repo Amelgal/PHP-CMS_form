@@ -6,42 +6,36 @@ namespace Controllers;
 use PHPMailer\PHPMailer\Exception;
 use Services\Db;
 use Services\EmailSender;
+use Models\DbRequest;
 
 class MailSenderController
 {
     private $sender;
     private $db;
+    private $db_request;
 
     public function __construct()
     {
         $this->db = new Db();
+        $this->db_request = new DbRequest();
         $this->sender = new EmailSender();
     }
 
     function sendMail()
     {
-        $dbResult = $this->db->query('SELECT * FROM `regform` WHERE `send_confirmed`= :sendconfirmed LIMIT 3;',
-        [
-            ':sendconfirmed' => '0',
-        ]
-        );
 
+        $request_result = $this->db_request->selectConfirmed();
         //var_dump($dbResult);
-        foreach ($dbResult as $key){
+        foreach ($request_result as $key){
             try {
                 $sentResult=$this->sender->sender($key);
                 if ($sentResult){
-                    $this->db->query( 'UPDATE `regform` SET `send_confirmed` = :sendconfirmed WHERE `regform`.`id` = :id;',
-                        [
-                            ':sendconfirmed' => '1',
-                            ':id'=> $key['id'],
-                        ]
-                    );
+                    $this->db_request->updateConfirmed($key);
                 }
             } catch (Exception $e) {
                 echo "Mailer Error". $mail->ErrorInfo;
             }
-            var_dump($sentResult);
+            //var_dump($sentResult);
         }
 
     }

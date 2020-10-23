@@ -2,6 +2,8 @@
 // шаблон для формы
 include __DIR__ . '/../header.php';
 include_once __DIR__ . '/uploadForm.php';
+var_dump($_SERVER[REDIRECT_URL]);
+var_dump($_POST);
 
 ?>
 
