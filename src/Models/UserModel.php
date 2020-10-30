@@ -24,8 +24,7 @@ class UserModel
             {
                 if ($error == UPLOAD_ERR_OK) {
                     $tmp_name = $_FILES["image"]["tmp_name"][$key];
-                    $uploadfile = (dirname(__FILE__)).'/../../image/'.basename($_FILES["image"]["name"][$key]);
-                    //var_dump($uploadfile);
+                    $uploadfile = rootPath().'/image/'.basename($_FILES["image"]["name"][$key]);
                     if (move_uploaded_file($tmp_name, $uploadfile)) {
                         $successfullImage++;
                     } else {
@@ -34,8 +33,8 @@ class UserModel
                 }
             }
         }
-         /*$this->db->query('INSERT INTO `regform` (`name`, `birth_date`, `gender`, `adress`, `cours`, `country_id`, `comment`,`email`,`image_1`,`image_2`,`image_3`)
-                                  VALUES ( :name, :birth_date,  :gender,  :adress, :cours, :country_id, :comment, :email, :image_1, :image_2, :image_3);',
+         /*$this->db->query('INSERT INTO `users` (`name`, `birth_date`, `gender`, `adress`, `cours`, `country_id`, `comment`,`email`,`face_img`,`passport_img`,`code_img`)
+                                  VALUES ( :name, :birth_date,  :gender,  :adress, :cours, :country_id, :comment, :email, :face_img, :passport_img, :code_img);',
              [
                  ':name' => $form_data['name'],
                  ':birth_date' => $form_data['birthDate'],
@@ -45,9 +44,9 @@ class UserModel
                  ':country_id' => $form_data['countryId'],
                  ':comment' => $form_data['comment'],
                  ':email' => $form_data['email'],
-                 ':image_1' => $_FILES["image"]["name"][0],
-                 ':image_2' => $_FILES["image"]["name"][1],
-                 ':image_3' => $_FILES["image"]["name"][2],
+                 ':face_img' => $_FILES["image"]["name"][0],
+                 ':passport_img' => $_FILES["image"]["name"][1],
+                 ':code_img' => $_FILES["image"]["name"][2],
              ], static::class
          );*/
         return $successfullImage;
@@ -55,7 +54,7 @@ class UserModel
 
     public function selectConfirmed()
     {
-        $dbResult = $this->db->query('SELECT * FROM `regform` WHERE `send_confirmed`= :sendconfirmed LIMIT 3;',
+        $dbResult = $this->db->query('SELECT * FROM `users` WHERE `send_confirmed`= :sendconfirmed LIMIT 3;',
             [
                 ':sendconfirmed' => 0,
             ]
@@ -64,7 +63,7 @@ class UserModel
     }
     public function updateConfirmed(array $key)
     {
-        $this->db->query( 'UPDATE `regform` SET `send_confirmed` = :sendconfirmed WHERE `regform`.`id` = :id;',
+        $this->db->query( 'UPDATE `users` SET `send_confirmed` = :sendconfirmed WHERE `regform`.`id` = :id;',
             [
                 ':sendconfirmed' => '1',
                 ':id'=> $key['id'],

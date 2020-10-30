@@ -11,7 +11,7 @@ class EmailSender
 
     public function __construct()
     {
-        $this->senderOptions = (require dirname(__FILE__) . '/../sendMailConfig.php')['config'];
+        $this->senderOptions = (require rootPath() . '/src/sendMailConfig.php')['config'];
     }
     public function sender(array $sentData)
     {
@@ -34,7 +34,7 @@ class EmailSender
 
 
         ob_start();
-        require (dirname(__FILE__)."/../../templates/mail/message.php");
+        require (rootPath()."/templates/mail/message.php");
         $body = ob_get_contents();
         ob_end_clean();
         $mail->Body = $body;
@@ -42,16 +42,16 @@ class EmailSender
 
         $file = [
             'image'=>[
-                'image_1' => $sentData['image_1'],
-                'image_2' => $sentData['image_2'],
-                'image_3' => $sentData['image_3'],
+                'face_img' => $sentData['face_img'],
+                'passport_img' => $sentData['passport_img'],
+                'code_img' => $sentData['code_img'],
             ]
         ];
 
             foreach ($file['image'] as $key )
             {
                 if(!empty($key)){
-                    $mail->addAttachment('../image/'.basename($key));
+                    $mail->addAttachment( rootPath() . '/image/'.basename($key));
                 }
             }
 

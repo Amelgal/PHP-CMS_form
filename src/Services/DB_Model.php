@@ -10,7 +10,7 @@ class DB_Model
 
     public function __construct()
     {
-        $dbOptions = (require dirname(__FILE__) . '/../settingsDb.php')['db'];
+        $dbOptions = (require rootPath() . '/src/settingsDb.php')['db'];
 
         $this->pdo = new \PDO(
             'mysql:host=' . $dbOptions['host'] . ';dbname=' . $dbOptions['dbname'],

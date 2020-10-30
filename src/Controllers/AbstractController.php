@@ -10,6 +10,6 @@ abstract class AbstractController
 
     public function __construct()
     {
-        $this->view = new View(dirname(__FILE__) . '/../../templates');
+        $this->view = new View( rootPath() . '/templates');
     }
 }
