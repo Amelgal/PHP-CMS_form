@@ -2,15 +2,15 @@
 // Основные функции этого класса это подключение к бд и обработака SQL запросов
 namespace Services;
 
-class Db
+class DB_Model
 {
     /** @var \PDO */
     private $pdo;
-    private $connection;
+    //private $connection;
 
     public function __construct()
     {
-        $dbOptions = (require __DIR__ . '/../settingsDb.php')['db'];
+        $dbOptions = (require dirname(__FILE__) . '/../settingsDb.php')['db'];
 
         $this->pdo = new \PDO(
             'mysql:host=' . $dbOptions['host'] . ';dbname=' . $dbOptions['dbname'],

@@ -1,12 +1,12 @@
 <?php
     //  функцию автозагрузки
     spl_autoload_register(function (string $className) {
-        require_once __DIR__ . '/../src/' . $className . '.php';
+        require_once dirname(__FILE__) . '/../src/' . $className . '.php';
     });
 
     // роутинг
     $route = $_GET['route'] ?? '';
-    $routes = require __DIR__ . '/../src/routes.php';
+    $routes = require dirname(__FILE__) . '/../src/routes.php';
 
     $isRouteFound = false;
     foreach ($routes as $pattern => $controllerAndAction) {

@@ -1,7 +1,7 @@
 <?php
 // паттерны для роутинга
 return [
-    '~^$~' => [\Controllers\MainController::class, 'main'],
-    '~^users/register$~' => [\Controllers\UsersController::class, 'signUp'],
-    '~^test/script$~' => [\Controllers\MailSenderController::class, 'sendMail'],
+    '~^$~' => [\Controllers\MainController::class, 'ActionMainPage'],
+    '~^users/register$~' => [\Controllers\UsersController::class, 'ActionSignUp'],
+    '~^test/script$~' => [\Controllers\CronController::class, 'ActionSendMail'],
 ];

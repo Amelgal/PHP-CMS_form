@@ -3,7 +3,7 @@
 
 namespace Models\Users;
 
-use Models\DbRequest;
+use Models\UserModel;
 
 class User
 {
@@ -47,7 +47,7 @@ class User
 
     public function __construct(array $userData)
     {
-        $this->request = new DbRequest();
+        $this->request = new UserModel();
         $this->fullUserName = $userData['name'];
         $this->email = $userData['email'];
         $this->addressUser = $userData['address'];
@@ -60,7 +60,7 @@ class User
         $this->createdAt = date("F j, Y, g:i a");
         $this->validateConfirmed = true;
 
-        $this->successfullImageCount = $this->request->insert($userData);
+        $this->successfullImageCount = $this->request->insertUser($userData);
 
         return $this->validateConfirmed;
     }

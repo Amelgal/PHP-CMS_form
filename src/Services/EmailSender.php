@@ -11,16 +11,16 @@ class EmailSender
 
     public function __construct()
     {
-        $this->senderOptions = (require __DIR__ . '/../sendMailConfig.php')['config'];
-        //var_dump($this->senderOptions);
-
+        $this->senderOptions = (require dirname(__FILE__) . '/../sendMailConfig.php')['config'];
     }
     public function sender(array $sentData)
     {
+        //var_dump($sentData);
+        require'../vendor/autoload.php';
 
-        require_once '../vendor/autoload.php';
         $button = true;
         $mail = new PHPMailer(true);
+
         $mail->From = $this->senderOptions['sender']['email'];
         $mail->FromName = "TEST";
 
@@ -31,6 +31,7 @@ class EmailSender
         $mail->isHTML(true);
 
         $mail->Subject = "Student Form Registration";
+
 
         ob_start();
         require (dirname(__FILE__)."/../../templates/mail/message.php");
@@ -49,12 +50,15 @@ class EmailSender
 
             foreach ($file['image'] as $key )
             {
-                $mail->addAttachment('../image/'.basename($key));
+                if(!empty($key)){
+                    $mail->addAttachment('../image/'.basename($key));
+                }
             }
 
         if($button != false){
-            echo "It's done";
             $result = $mail->send();
+            echo "It's done";
+
             //var_dump($result);
             return $result;
         }

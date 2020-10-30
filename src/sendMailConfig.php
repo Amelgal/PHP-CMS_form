@@ -3,11 +3,11 @@
 return [
     'config' => [
         'sender' => [
-            'email' => "....@gmail.com",
-            'name' => ".....",
+            'email' => "myblogcodeactivation@gmail.com",
+            'name' => "Amelgal",
         ],
         'receivers' => [
-            'email' => "....@gmail.com",
+            'email' => "yevhenii.shalko@gmail.com",
             'name' => "Student",
         ]
     ]

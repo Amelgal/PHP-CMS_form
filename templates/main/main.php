@@ -1,7 +1,7 @@
 <?php
 // шаблон для главной странички
-include __DIR__ . '/../header.php'; ?>
+include dirname(__FILE__) . '/../header.php'; ?>
 
 <?= "Here is main page of the site "?>
 
-<?php include __DIR__ . '/../footer.php'; ?>
+<?php include dirname(__FILE__) . '/../footer.php'; ?>

@@ -3,19 +3,21 @@
 
 namespace Models;
 
-use Services\Db;
+use Services\DB_Model;
 
-class DbRequest
+class UserModel
 {
     private $db;
+
     public function __construct()
     {
-        $this->db = new Db();
+        $this->db = new DB_Model();
     }
 
-    public function insert(array $form_data)
+    public function insertUser(array $form_data)
     {
         $successfullImage = 0;
+
         if(!empty($_FILES["image"]["name"])){
 
             foreach ($_FILES["image"]["error"] as $key => $error)

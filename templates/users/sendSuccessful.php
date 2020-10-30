@@ -1,6 +1,6 @@
 <?php
 // шаблон при успешной загрузке данных в БД
-include __DIR__ . '/../header.php'; ?>
+include dirname(__FILE__) . '/../header.php'; ?>
 
 <div class="div">
     <?php
@@ -15,4 +15,4 @@ include __DIR__ . '/../header.php'; ?>
 
 </div>
 
-<?php include __DIR__ . '/../footer.php'; ?>
+<?php include dirname(__FILE__) . '/../footer.php'; ?>

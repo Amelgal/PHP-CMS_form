@@ -5,32 +5,30 @@
 namespace Controllers;
 
 
+use Classes\RegistrationValidate;
 use Exceptions\InvalidArgumentException;
 use Models\Users\User;
-use View\View;
-use Classes\FormValidate;
-use Controllers\MailSenderController;
+//use Controllers\CronController;
 
-class UsersController
+class UsersController extends AbstractController
 {
-    /** @var View */
-    private $view;
+    /*private $view;
     private $validate;
     private $mailSender;
 
     public function __construct()
     {
-        $this->view = new View(__DIR__ . '/../../templates');
-        $this->validate = new FormValidate();
-        $this->mailSender = new MailSenderController();
-    }
+        //$this->view = new View(dirname(__FILE__) . '/../../templates');
+        //$this->validate = new FormValidate();
+        //$this->mailSender = new CronController();
+    }*/
 
-    public function signUp()
+    public function ActionSignUp()
     {
         if (!empty($_POST)) {
             setcookie("forma", serialize($_POST), 0, '/');
             try {
-                $user = new User($this->validate::validateForm());
+                $user = new User(RegistrationValidate::validateForm());
                 //var_dump($user);
             } catch (InvalidArgumentException $e) {
                 $this->view->renderHtml('users/signUp.php', ['error' => $e->getMessage()]);
@@ -39,7 +37,7 @@ class UsersController
             if ($user) {
                 // Поставил отправку на почту сюда, но работает через cron от OpenServer.
                 // Отправляет три сообщения
-                $this->mailSender->sendMail();
+                //$this->mailSender->sendMail();
                 $this->view->renderHtml('users/sendSuccessful.php',['nameUser' => $user->getFullUserName(),'successfulImage'=>$user->getSuccessfullImageCount()],$user->getValidateConfirmed());
                 return;
             }

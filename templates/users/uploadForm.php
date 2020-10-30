@@ -1,10 +1,6 @@
 <?php
 
-unset($_GET['route']);
-setcookie("GET", serialize($_GET), 0, '/');
-
-$cookiesGet = unserialize($_COOKIE['GET']);
-
+var_dump($cookiesGet);
 if ($cookiesGet['get']!="1"): ?>
     <form method="GET" action="<?= $_SERVER[REDIRECT_URL]?>">
         <div class="c1">

@@ -4,28 +4,24 @@
 namespace Controllers;
 
 use PHPMailer\PHPMailer\Exception;
-use Services\Db;
 use Services\EmailSender;
-use Models\DbRequest;
+use Models\UserModel;
 
-class MailSenderController
+class CronController
 {
     private $sender;
-    private $db;
     private $db_request;
 
     public function __construct()
     {
-        $this->db = new Db();
-        $this->db_request = new DbRequest();
+        $this->db_request = new UserModel();
         $this->sender = new EmailSender();
     }
 
-    function sendMail()
+    function ActionSendMail()
     {
-
         $request_result = $this->db_request->selectConfirmed();
-        //var_dump($dbResult);
+
         foreach ($request_result as $key){
             try {
                 $sentResult=$this->sender->sender($key);
@@ -35,7 +31,6 @@ class MailSenderController
             } catch (Exception $e) {
                 echo "Mailer Error". $mail->ErrorInfo;
             }
-            //var_dump($sentResult);
         }
 
     }

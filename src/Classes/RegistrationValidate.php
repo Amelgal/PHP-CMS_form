@@ -6,14 +6,13 @@ namespace Classes;
 
 use Exceptions\InvalidArgumentException;
 
-class FormValidate
+class RegistrationValidate
 {
     //private $unvalidated_data;
 
-    public function __construct()
-    {
-
-    }
+//    public function __construct()
+//    {
+//    }
 
     public static function validateForm( )
 {
@@ -110,4 +109,7 @@ class FormValidate
 
        return $userData;
 }
+//    public static function SuccessfullImageCount(){
+//
+//    }
 }

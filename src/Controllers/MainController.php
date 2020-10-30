@@ -4,24 +4,11 @@
 
 namespace Controllers;
 
-use View\View;
-
-
-class MainController
+class MainController extends AbstractController
 {
-    private $view;
-
-
-
-    public function __construct()
+    public function ActionMainPage()
     {
-        $this->view = new View(__DIR__ . '/../../templates');
-    }
-    public function main()
-    {
-
         $this->view->renderHtml('main/main.php', []);
-
     }
 
 }

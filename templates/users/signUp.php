@@ -1,14 +1,25 @@
 <?php
 // шаблон для формы
-include __DIR__ . '/../header.php';
+include dirname(__FILE__) . '/../header.php';
+
 unset($_GET['route']);
+var_dump($_GET);
+var_dump($_COOKIE);
+
+setcookie("GET", serialize($_GET), 0, '/');
+
+//$cookiesGet = unserialize($_COOKIE['GET']);
+
 if (empty($_GET) and !empty($_COOKIE['forma'])){
-    include_once __DIR__ . '/uploadForm.php';
+    include_once dirname(__FILE__) . '/uploadForm.php';
 }
-    if( !($_GET['Close']=='Not Ok')) {
+    if(!($_GET['Close']=='Not Ok')) {
         $cookies = unserialize(stripslashes($_COOKIE['forma']));
     }
-    if (!empty($_GET)):
+//var_dump($_GET);
+
+if (!empty($_GET)):
+    //var_dump($error);
         if (!empty($error)): ?>
             <div style="background-color: red;padding: 5px;margin: 15px"><?= $error ?></div>
         <?php endif; ?>
@@ -163,5 +174,5 @@ if (empty($_GET) and !empty($_COOKIE['forma'])){
 
 <?php
     endif;
-    include __DIR__ . '/../footer.php'; ?>
+    include dirname(__FILE__) . '/../footer.php'; ?>
 <?php
