@@ -21,7 +21,6 @@ class CronController
     function ActionSendMail()
     {
         $request_result = $this->db_request->selectConfirmed();
-        var_dump($request_result);
 
         foreach ($request_result as $key){
             try {

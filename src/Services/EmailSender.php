@@ -59,7 +59,6 @@ class EmailSender
             $result = $mail->send();
             echo "It's done";
 
-            //var_dump($result);
             return $result;
         }
         return false;

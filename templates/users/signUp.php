@@ -1,6 +1,6 @@
 <?php
 // шаблон для формы
-include dirname(__FILE__) . '/../header.php';
+include rootPath() . '/templates/header.php';
 
 unset($_GET['route']);
 var_dump($_GET);
@@ -11,7 +11,7 @@ setcookie("GET", serialize($_GET), 0, '/');
 //$cookiesGet = unserialize($_COOKIE['GET']);
 
 if (empty($_GET) and !empty($_COOKIE['forma'])){
-    include_once dirname(__FILE__) . '/uploadForm.php';
+    include_once rootPath() . '/templates/users/uploadForm.php';
 }
     if(!($_GET['Close']=='Not Ok')) {
         $cookies = unserialize(stripslashes($_COOKIE['forma']));
@@ -174,5 +174,5 @@ if (!empty($_GET)):
 
 <?php
     endif;
-    include dirname(__FILE__) . '/../footer.php'; ?>
+    include rootPath() . '/templates/footer.php'; ?>
 <?php
