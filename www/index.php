@@ -1,6 +1,7 @@
 <?php
     //  функцию автозагрузки
     spl_autoload_register(function (string $className) {
+        $className = str_replace ( '\\' , "/" , $className);
         require_once rootPath() . '/src/' . $className . '.php';
     });
 
@@ -12,7 +13,6 @@
 // роутинг
     $route = $_GET['route'] ?? '';
     $routes = require rootPath() . '/src/routes.php';
-
     $isRouteFound = false;
     foreach ($routes as $pattern => $controllerAndAction) {
         preg_match($pattern, $route, $matches);

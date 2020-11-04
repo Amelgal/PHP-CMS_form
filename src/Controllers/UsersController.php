@@ -29,7 +29,6 @@ class UsersController extends AbstractController
             setcookie("forma", serialize($_POST), 0, '/');
             try {
                 $user = new User(RegistrationValidate::validateForm());
-                //var_dump($user);
             } catch (InvalidArgumentException $e) {
                 $this->view->renderHtml('users/signUp.php', ['error' => $e->getMessage()]);
                 return;

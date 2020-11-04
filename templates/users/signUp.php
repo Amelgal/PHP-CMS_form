@@ -1,30 +1,30 @@
 <?php
 // шаблон для формы
 include rootPath() . '/templates/header.php';
-
-unset($_GET['route']);
-var_dump($_GET);
-var_dump($_COOKIE);
-
-setcookie("GET", serialize($_GET), 0, '/');
+//
+//unset($_GET['route']);
+//var_dump($_GET);
+//var_dump($_COOKIE);
+//
+//setcookie("GET", serialize($_GET), 0, '/');
 
 //$cookiesGet = unserialize($_COOKIE['GET']);
 
-if (empty($_GET) and !empty($_COOKIE['forma'])){
-    include_once rootPath() . '/templates/users/uploadForm.php';
-}
-    if(!($_GET['Close']=='Not Ok')) {
-        $cookies = unserialize(stripslashes($_COOKIE['forma']));
-    }
+//if (empty($_GET) and !empty($_COOKIE['forma'])){
+//    include_once rootPath() . '/templates/users/uploadForm.php';
+//}
+//    if(!($_GET['Close']=='Not Ok')) {
+       $cookies = unserialize(stripslashes($_COOKIE['forma']));
+//    }
 //var_dump($_GET);
 
-if (!empty($_GET)):
+//if (!empty($_GET)):
     //var_dump($error);
         if (!empty($error)): ?>
             <div style="background-color: red;padding: 5px;margin: 15px"><?= $error ?></div>
         <?php endif; ?>
 
-<form method="POST" enctype='multipart/form-data' action="<?=$_SERVER[REDIRECT_URL]?>">
+<form method="POST" enctype='multipart/form-data' action="/users/register">
     <fieldset>
         <div class="c1">
             <p><h1>Student Registration Form</h1>Fill out the form carefully for registration</p>
@@ -34,18 +34,17 @@ if (!empty($_GET)):
             <h4>Student Name</h4>
             <div class="flex">
                 <div class="input">
-                    <input type="text" name="full_name[first_n]" value="<?= $cookies[full_name][first_n]?>">
+                    <input type="text" name="full_name[first_n]" value="<?= $cookies['full_name']['first_n']?>">
                     <p>First Name</p>
                 </div>
                 <div class="input">
-                    <input type="text"  name="full_name[middle_n]" value="<?= $cookies[full_name][middle_n] ?>">
+                    <input type="text"  name="full_name[middle_n]" value="<?= $cookies['full_name']['middle_n'] ?>">
                     <p>Middle Name</p>
                 </div>
                 <div class="input">
-                    <input type="text"  name="full_name[last_n]"value="<?= $cookies[full_name][last_n] ?>">
+                    <input type="text"  name="full_name[last_n]"value="<?= $cookies['full_name']['last_n'] ?>">
                     <p>Last Name</p>
                 </div>
-                <span class="error">* <?= ($nameError == null)?"буквы a-я, A-Я и пробелы":$nameError;?></span>
             </div>
         </div>
         <div class="clear"></div>
@@ -53,8 +52,7 @@ if (!empty($_GET)):
         <div class="c1">
             <h4>Email</h4>
             <div class="input">
-                <input type="text"  name="email" value="<?= $cookies[email] ?>">
-                <span class="error">* <?= $emailError;?></span>
+                <input type="text"  name="email[email]" value="<?= $cookies['email']['email'] ?>">
                 <p>Email</p>
 
             </div>
@@ -98,8 +96,8 @@ if (!empty($_GET)):
             <div>
             </div>
             <p> <h4>Gender</h4></p>
-            <input type="radio" name="gender" value="Male" checked> Male
-            <input type="radio" name="gender" value="Female"> Female
+            <input type="radio" name="gender[gender]" value="Male" checked> Male
+            <input type="radio" name="gender[gender]" value="Female"> Female
         </div>
         <div class="clear"></div>
 
@@ -109,11 +107,11 @@ if (!empty($_GET)):
             <div class="colum">
                 <div class="flex">
                     <div class="input">
-                        <input type="text" name="full_address[city]" value="<?= $cookies[full_address][city]?>">
+                        <input type="text" name="full_address[city]" value="<?= $cookies['full_address']['city']?>">
                         <p>City</p>
                     </div>
                     <div class="input">
-                        <input size="22%" type="text" name="full_address[street_address]" value="<?= $cookies[full_address][street_address]?>">
+                        <input size="22%" type="text" name="full_address[street_address]" value="<?= $cookies['full_address']['street_address']?>">
                         <p>Street Address</p>
                     </div>
                 </div>
@@ -122,12 +120,12 @@ if (!empty($_GET)):
             <div class="colum">
                 <div class="flex">
                     <div class="input">
-                        <input type="text" name="full_address[zip_code]" value="<?= $cookies[full_address][zip_code]?>">
+                        <input type="text" name="full_address[zip_code]" value="<?= $cookies['full_address']['zip_code']?>">
                         <p>Postal/Zip Code</p>
                     </div>
                     <div class="input">
                         <select name="full_address[country]">
-                            <option hidden="true"> Please Select</option>
+                            <option hidden="true" value=""> Please Select</option>
                             <option> Ukraine</option>
                             <option> USA</option>
                             <option> Japan</option>
@@ -162,7 +160,7 @@ if (!empty($_GET)):
 
         <div>
             <h4>Additional Comments</h4>
-            <textarea cols="100" rows="10" name="textarea"></textarea>
+            <textarea cols="100" rows="10" name="textarea[textarea]"></textarea>
         </div>
 
 
@@ -173,6 +171,6 @@ if (!empty($_GET)):
 </form>
 
 <?php
-    endif;
+    //endif;
     include rootPath() . '/templates/footer.php'; ?>
 <?php

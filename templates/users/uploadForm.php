@@ -2,7 +2,7 @@
 
 var_dump($cookiesGet);
 if ($cookiesGet['get']!="1"): ?>
-    <form method="GET" action="<?= $_SERVER[REDIRECT_URL]?>">
+    <form method="GET" action="<?= $_SERVER['REDIRECT_URL']?>">
         <div class="c1">
             <p>You wish to continue filling out the registration form?</p>
         </div>

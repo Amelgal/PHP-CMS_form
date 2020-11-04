@@ -17,7 +17,7 @@ class DB_Model
             $dbOptions['user'],
             $dbOptions['password']
         );
-        //$this->connection =  mysqli_connect('127.0.0.1','root','','nixcourse');
+        //$this->connection =  mysqli_connect('127.0.0.1','root','','nixcourse.loc');
         $this->pdo->exec('SET NAMES UTF8');
     }
     public function query(string $sql, $params = []): ?array

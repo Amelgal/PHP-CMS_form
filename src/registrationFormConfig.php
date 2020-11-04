@@ -2,60 +2,97 @@
 return [
     'full_name' => [
         'first_n' => [
-            'expression' => '~^[a-яA-Я ]*$~',
+            'regexp' => '~^[a-яA-Я ]*$~',
             'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'first_n',
             ],
         'middle_n' => [
-            'expression' => '~^[a-яA-Я ]*$~',
+            'regexp' => '~^[a-яA-Я ]*$~',
             'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'middle_n',
         ],
         'last_n' => [
-            'expression' => '~^[a-яA-Я ]*$~',
+            'regexp' => '~^[a-яA-Я ]*$~',
             'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'last_n',
         ],
     ],
     'email' => [
-        'expression' => '~^.*$~',
-        'filter' => FILTER_VALIDATE_EMAIL,
+        'email' => [
+            'regexp' => '~^.*$~',
+            'error'=>'email',
+            'filter' => FILTER_VALIDATE_EMAIL,
+        ],
+
     ],
     'birth_data' => [
         'day' => [
-            'expression' => '~^[0-9]*$~',
+            'regexp' => '~^[0-9]*$~',
             'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'day',
         ],
         'month' => [
-            'expression' => '~^[a-яA-Я]*$~',
+            'regexp' => '~^[a-яA-Я]*$~',
             'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'month',
         ],
         'year' => [
-            'expression' => '~^[0-9]*$~',
+            'regexp' => '~^[0-9]*$~',
             'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'year',
         ],
     ],
     'gender' => [
-        'expression' => "!preg_match('~^(Male|Female)$~')",
-        'filter' => FILTER_VALIDATE_REGEXP,
+        'gender' => [
+            'regexp' => '~^(Male|Female)$~',
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'gender',
+        ],
     ],
     'full_address' => [
         'city' => [
-            'expression' => "!preg_match('~^[a-яA-Я ]*$~')",
+            'regexp' => '~^[a-яA-Я ]*$~',
             'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'city',
         ],
         'street_address' => [
-            'expression' => "!preg_match('~^[a-яA-Я .,[0-9]*$~')",
+            'regexp' => '~^[a-яA-Я .,[0-9]*$~',
             'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'street_address',
         ],
         'country' => [
-            'expression' => "!preg_match('~^[a-яA-Я ]*$~')",
+            'regexp' => '~^[a-яA-Я ]*$~',
             'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'country',
         ],
     ],
     'course' => [
-            'expression' => "!preg_match('~^[Windows (Xp|0-9)]*$~')",
+        '0' =>[
+            'regexp' => '~^[Windows (Xp|0-9)]*$~',
             'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'course',
+        ],
+        '1' =>[
+            'regexp' => '~^[Windows (Xp|0-9)]*$~',
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'course',
+        ],
+        '2' =>[
+            'regexp' => '~^[Windows (Xp|0-9)]*$~',
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'course',
+        ],
+        '3' =>[
+            'regexp' => '~^[Windows (Xp|0-9)]*$~',
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'course',
+        ],
     ],
     'textarea' => [
-        'expression' => "!preg_match('~^[a-яA-Я ]*$~')",
-        'filter' => FILTER_VALIDATE_REGEXP,
+        'textarea' =>[
+            'regexp' => '~^[a-яA-Я ]*$~',
+            'filter' => FILTER_VALIDATE_REGEXP,
+            'error'=>'textarea',
+        ],
     ],
 ];
