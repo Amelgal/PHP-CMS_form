@@ -24,12 +24,13 @@ class EmailSender
 
         $mail->Debugoutput = 'html';
         $mail->Host = 'smtp.gmail.com';
-        $mail->Port = 587;
-        $mail->SMTPSecure = 'tsl';
+        $mail->Port = $this->senderOptions['smtp']['port'];;
+        $mail->SMTPSecure = $this->senderOptions['smtp']['smtpsecure'];
         $mail->SMTPAuth = true;
-        $mail->Username = "myblogcodeactivation@gmail.com";
-        $mail->Password = "084620753951";
-
+        $mail->Username = $this->senderOptions['smtp']['username'];
+        $mail->Password = $this->senderOptions['smtp']['password'];
+               
+        
 
 
         $mail->From = $this->senderOptions['sender']['email'];
