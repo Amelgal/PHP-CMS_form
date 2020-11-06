@@ -1,5 +1,6 @@
 <?php
 // шаблон сообщения, который отправляется на почту
+error_reporting(0);
 ?>
 <!Doctype html>
 <html lang="en">
@@ -11,6 +12,7 @@
 You filled out the form, here is your data.<br>
 <hr/>
 Hello, <?= $sentData['name'] ?><br>
+Your nickname, <?= $sentData['nickname'] ?><br>
 Email: <?= $sentData['email'] ?><br>
 Birth data: <?= $sentData['birth_date'] ?><br>
 Gender: <?= $sentData['gender'] ?><br>

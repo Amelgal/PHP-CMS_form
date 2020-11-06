@@ -1,27 +1,25 @@
 <?php
+error_reporting(0);
 // шаблон для формы
 include rootPath() . '/templates/header.php';
-//
-//unset($_GET['route']);
-//var_dump($_GET);
+
+session_start();
+unset($_GET['route']);
+//var_dump($_POST);
 //var_dump($_COOKIE);
-//
-//setcookie("GET", serialize($_GET), 0, '/');
+$cookies = unserialize(stripslashes($_COOKIE['forma']));
+//var_dump($cookies);
+$_SESSION = $_GET;
+//var_dump($_SESSION);
+//var_dump($error);
+if (empty($_SESSION) AND !empty($cookies)){
+    include_once rootPath() . '/templates/users/uploadForm.php';
+}
 
-//$cookiesGet = unserialize($_COOKIE['GET']);
-
-//if (empty($_GET) and !empty($_COOKIE['forma'])){
-//    include_once rootPath() . '/templates/users/uploadForm.php';
-//}
-//    if(!($_GET['Close']=='Not Ok')) {
-       $cookies = unserialize(stripslashes($_COOKIE['forma']));
-//    }
-//var_dump($_GET);
-
-//if (!empty($_GET)):
-    //var_dump($error);
-        if (!empty($error)): ?>
-            <div style="background-color: red;padding: 5px;margin: 15px"><?= $error ?></div>
+if (!empty($_SESSION)):
+        ($_SESSION['Save']=='Not Ok')? $_GET['error'] = null: $_GET['error'];
+        if (!empty($_GET['error'])): ?>
+            <div style="background-color: red;padding: 5px;margin: 15px"><?= $_GET['error'] ?></div>
         <?php endif; ?>
 
 <form method="POST" enctype='multipart/form-data' action="/users/register">
@@ -34,15 +32,15 @@ include rootPath() . '/templates/header.php';
             <h4>Student Name</h4>
             <div class="flex">
                 <div class="input">
-                    <input type="text" name="full_name[first_n]" value="<?= $cookies['full_name']['first_n']?>">
+                    <input type="text" name="full_name[first_n]" value="<?= (($_SESSION['Save']=='Not Ok'))?'':$cookies['full_name']['first_n']?>">
                     <p>First Name</p>
                 </div>
                 <div class="input">
-                    <input type="text"  name="full_name[middle_n]" value="<?= $cookies['full_name']['middle_n'] ?>">
+                    <input type="text"  name="full_name[middle_n]" value="<?= ($_SESSION['Save']=='Not Ok')?'':$cookies['full_name']['middle_n'] ?>">
                     <p>Middle Name</p>
                 </div>
                 <div class="input">
-                    <input type="text"  name="full_name[last_n]"value="<?= $cookies['full_name']['last_n'] ?>">
+                    <input type="text"  name="full_name[last_n]"value="<?= ($_SESSION['Save']=='Not Ok')?'':$cookies['full_name']['last_n'] ?>">
                     <p>Last Name</p>
                 </div>
             </div>
@@ -50,9 +48,27 @@ include rootPath() . '/templates/header.php';
         <div class="clear"></div>
 
         <div class="c1">
+            <h4>Nickname</h4>
+            <div class="input">
+                <input type="text" name="nickname[nickname]" value="<?= (($_SESSION['Save']=='Not Ok'))?'':$cookies['nickname']['nickname']?>">
+                <p>Nickname</p>
+
+            </div>
+        </div>
+
+        <div class="c1">
+            <h4>Password</h4>
+            <div class="input">
+                <input type="text" name="password[password]" value="<?= (($_SESSION['Save']=='Not Ok'))?'':$cookies['password']['password']?>">
+                <p>Password</p>
+
+            </div>
+        </div>
+
+        <div class="c1">
             <h4>Email</h4>
             <div class="input">
-                <input type="text"  name="email[email]" value="<?= $cookies['email']['email'] ?>">
+                <input type="text"  name="email[email]" value="<?= ($_SESSION['Save']=='Not Ok')?'':$cookies['email']['email'] ?>">
                 <p>Email</p>
 
             </div>
@@ -107,11 +123,11 @@ include rootPath() . '/templates/header.php';
             <div class="colum">
                 <div class="flex">
                     <div class="input">
-                        <input type="text" name="full_address[city]" value="<?= $cookies['full_address']['city']?>">
+                        <input type="text" name="full_address[city]" value="<?= ($_SESSION['Save']=='Not Ok')?'':$cookies['full_address']['city']?>">
                         <p>City</p>
                     </div>
                     <div class="input">
-                        <input size="22%" type="text" name="full_address[street_address]" value="<?= $cookies['full_address']['street_address']?>">
+                        <input size="22%" type="text" name="full_address[street_address]" value="<?= ($_SESSION['Save']=='Not Ok')?'':$cookies['full_address']['street_address']?>">
                         <p>Street Address</p>
                     </div>
                 </div>
@@ -120,7 +136,7 @@ include rootPath() . '/templates/header.php';
             <div class="colum">
                 <div class="flex">
                     <div class="input">
-                        <input type="text" name="full_address[zip_code]" value="<?= $cookies['full_address']['zip_code']?>">
+                        <input type="text" name="full_address[zip_code]" value="<?= ($_SESSION['Save']=='Not Ok')?'':$cookies['full_address']['zip_code']?>">
                         <p>Postal/Zip Code</p>
                     </div>
                     <div class="input">
@@ -171,6 +187,8 @@ include rootPath() . '/templates/header.php';
 </form>
 
 <?php
-    //endif;
+    endif;
+session_unset();
+session_destroy();
     include rootPath() . '/templates/footer.php'; ?>
 <?php

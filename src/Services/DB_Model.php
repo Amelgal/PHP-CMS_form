@@ -6,7 +6,6 @@ class DB_Model
 {
     /** @var \PDO */
     private $pdo;
-    //private $connection;
 
     public function __construct()
     {
@@ -17,8 +16,11 @@ class DB_Model
             $dbOptions['user'],
             $dbOptions['password']
         );
-        //$this->connection =  mysqli_connect('127.0.0.1','root','','nixcourse.loc');
         $this->pdo->exec('SET NAMES UTF8');
+    }
+    public function getLastInsertId(): int
+    {
+        return (int) $this->pdo->lastInsertId();
     }
     public function query(string $sql, $params = []): ?array
     {
@@ -27,7 +29,22 @@ class DB_Model
         if (false === $result) {
             return null;
         }
-
+//        return $sth->fetchAll();
+//        $sth = $this->pdo->prepare($sql);
+//        var_dump($sth);
+//        foreach ($params as $key=>$item) {
+//            var_dump($key);
+//            var_dump($item);
+//            $sth->bindParam($key, $item);
+//        }
+//       $sth->execute();
+//        if ($result === false) {
+//            echo "\nPDO::errorInfo():\n";
+//            var_dump($this->pdo->errorInfo());
+//        }
+//        if (false === $result) {
+//            return null;
+//        }
         return $sth->fetchAll();
     }
 

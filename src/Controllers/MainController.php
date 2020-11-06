@@ -4,11 +4,17 @@
 
 namespace Controllers;
 
+use Models\ArticleModel;
+use Models\Articles\Articles;
+
 class MainController extends AbstractController
 {
+
     public function ActionMainPage()
     {
-        $this->view->renderHtml('main/main.php', []);
+        $objArticles = new Articles();
+        $articles = $objArticles ->showArticle();
+        $this->view->renderHtml('main/main.php', ['articles' => $articles]);
     }
 
 }

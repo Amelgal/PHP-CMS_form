@@ -33,28 +33,38 @@ class UserModel
                 }
             }
         }
-         /*$this->db->query('INSERT INTO `users` (`name`, `birth_date`, `gender`, `adress`, `cours`, `country_id`, `comment`,`email`,`face_img`,`passport_img`,`code_img`)
-                                  VALUES ( :name, :birth_date,  :gender,  :adress, :cours, :country_id, :comment, :email, :face_img, :passport_img, :code_img);',
+         $this->db->query('INSERT INTO `users` (`name`, `nickname`, `password`, `birth_date`, `gender`, `adress`, `cours`, `country_id`, `comment`,`face_img`,`passport_img`,`code_img`)
+                                  VALUES ( :name, :nickname, :password, :birth_date,  :gender,  :adress, :cours, :country_id, :comment, :face_img, :passport_img, :code_img);',
              [
                  ':name' => $form_data['name'],
+                 ':nickname' => $form_data['nickname'],
+                 ':password' => $form_data['password'],
                  ':birth_date' => $form_data['birthDate'],
                  ':gender' => $form_data['gender'],
                  ':adress' => $form_data['address'],
                  ':cours' => $form_data['course'],
                  ':country_id' => $form_data['countryId'],
                  ':comment' => $form_data['comment'],
-                 ':email' => $form_data['email'],
                  ':face_img' => $_FILES["image"]["name"][0],
                  ':passport_img' => $_FILES["image"]["name"][1],
                  ':code_img' => $_FILES["image"]["name"][2],
              ], static::class
-         );*/
+         );
+           //var_dump($this->db->getLastInsertId());
+         $this->db->query('INSERT INTO `cron_line` (`user_id`,`email`) 
+                                  VALUES ( :user_id, :email);',
+             [
+                 ':user_id' => $this->db->getLastInsertId(),
+                 ':email' => $form_data['email'],
+             ], static::class
+         );
+
         return $successfullImage;
     }
 
     public function selectConfirmed()
     {
-        $dbResult = $this->db->query('SELECT * FROM `users` WHERE `send_confirmed`= :sendconfirmed LIMIT 3;',
+        $dbResult = $this->db->query('SELECT * FROM `cron_line` LEFT JOIN users ON `users`.`user_id`=`cron_line`.`user_id` WHERE `send_confirmed`= :sendconfirmed LIMIT 3;',
             [
                 ':sendconfirmed' => 0,
             ]
@@ -63,11 +73,24 @@ class UserModel
     }
     public function updateConfirmed(array $key)
     {
-        $this->db->query( 'UPDATE `users` SET `send_confirmed` = :sendconfirmed WHERE `regform`.`id` = :id;',
+        $this->db->query( 'UPDATE `cron_line` SET `send_confirmed` = :sendconfirmed WHERE `cron_line`.`user_id` = :user_id;',
             [
                 ':sendconfirmed' => '1',
-                ':id'=> $key['id'],
+                ':user_id'=> $key['user_id'],
             ]
         );
+    }
+    public function loginVerify(string $nickname, string $password){
+        $dbResult = $this->db->query('SELECT `nickname`,`password` FROM `users` WHERE `nickname`= :nickname AND `password`= :password;',
+            [
+                ':nickname' => $nickname,
+                ':password'=> $password,
+
+            ]
+        );
+        if (empty($dbResult)){
+            return false;
+        }
+        return true;
     }
 }

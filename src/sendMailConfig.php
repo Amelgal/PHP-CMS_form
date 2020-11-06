@@ -7,7 +7,7 @@ return [
             'name' => "Amelgal",
         ],
         'receivers' => [
-            'email' => "yevhenii.shalko@gmail.com",
+            'email' => "yevhenii.shalko@nure.ua",
             'name' => "Student",
         ]
     ]

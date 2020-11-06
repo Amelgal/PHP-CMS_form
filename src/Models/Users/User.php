@@ -3,6 +3,7 @@
 
 namespace Models\Users;
 
+use Exceptions\InvalidArgumentException;
 use Models\UserModel;
 
 class User
@@ -12,6 +13,12 @@ class User
 
     /** @var string */
     private $fullUserName;
+
+    /** @var string */
+    private $userNickname;
+
+    /** @var string */
+    private $userPassword;
 
     /** @var string */
     private $email;
@@ -49,6 +56,8 @@ class User
     {
         $this->request = new UserModel();
         $this->fullUserName = $userData['name'];
+        $this->userNickname = $userData['nickname'];
+        $this->userPassword = $userData['password'];
         $this->email = $userData['email'];
         $this->addressUser = $userData['address'];
         $this->birthDay = $userData['birthDate'];
@@ -63,6 +72,30 @@ class User
         $this->successfullImageCount = $this->request->insertUser($userData);
 
         return $this->validateConfirmed;
+    }
+
+    public static function login(){
+        $login = new UserModel();
+        $isConfirmed = $login ->loginVerify($_POST['nickname']['nickname'],$_POST['password']['password']);
+        if ($isConfirmed == false) {
+            throw new InvalidArgumentException('Нет такого аккаунта');
+        }
+        return $isConfirmed;
+    }
+    /**
+     * @return string
+     */
+    public function getUserNickname(): string
+    {
+        return $this->userNickname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserPassword(): string
+    {
+        return $this->userPassword;
     }
     /**
      * @return string

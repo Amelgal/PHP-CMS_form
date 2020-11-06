@@ -34,13 +34,35 @@ class UsersController extends AbstractController
                 return;
             }
             if ($user) {
-                // Поставил отправку на почту сюда, но работает через cron от OpenServer.
-                // Отправляет три сообщения
-                //$this->mailSender->sendMail();
                 $this->view->renderHtml('users/sendSuccessful.php',['nameUser' => $user->getFullUserName(),'successfulImage'=>$user->getSuccessfullImageCount()],$user->getValidateConfirmed());
                 return;
             }
         }
         $this->view->renderHtml('users/signUp.php', []);
+    }
+    public function ActionLogin()
+    {
+        setcookie('token', null, time()-3600, '/');
+        if (!empty($_POST)) {
+            try {
+                RegistrationValidate::successfulLogin();
+                $login = User::login();
+                setcookie('token', serialize($_POST), 0, '/');
+                //var_dump($_COOKIE);
+            } catch (InvalidArgumentException $e) {
+                $this->view->renderHtml('users/login.php', ['error' => $e->getMessage()]);
+                return;
+            }
+            if ($login) {
+                header('Location: http://nixcourse.loc/');
+                return;
+            }
+        }
+        $this->view->renderHtml('users/login.php');
+    }
+    public function ActionLogout()
+    {
+        setcookie('token', null, time()-3600, '/');
+        header('Location: http://nixcourse.loc/');
     }
 }

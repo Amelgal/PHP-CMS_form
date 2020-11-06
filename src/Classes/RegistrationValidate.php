@@ -2,6 +2,7 @@
 
 
 namespace Classes;
+error_reporting(0);
 
 
 use Exceptions\InvalidArgumentException;
@@ -20,7 +21,7 @@ class RegistrationValidate
     $_country_id = 0;
 
     $userData = $_POST;
-    $form_contact_validation = require (dirname(__FILE__) . '/../registrationFormConfig.php');
+    $form_contact_validation = require (rootPath() . '/src/registrationFormConfig.php');
 
     foreach ($form_contact_validation as $key_valid=>$item_valid) {
         foreach ($userData as $key_form=>$item_form) {
@@ -29,12 +30,11 @@ class RegistrationValidate
 
                 foreach ($item_valid as $key=>$item) {
                     foreach ($item_form as $k =>$it){
-
                         if ($key == $k){
 //                            var_dump($item);
 //                            var_dump($it);
                             if (empty($it)) {
-                                throw new InvalidArgumentException($item['error']);
+                                throw new InvalidArgumentException($item['name'].' не передан');
                             } else if (!filter_var($it, $item['filter'], array(
                                 "options" => array("regexp"=>$item['regexp'])
                             ))) {
@@ -68,6 +68,8 @@ class RegistrationValidate
     }
     $userData = [
         'name' => $userData['full_name']['first_n'] .' '. $userData['full_name']['middle_n'].' '.$userData['full_name']['last_n'],
+        'nickname'=>$userData['nickname']['nickname'],
+        'password'=>$userData['password']['password'],
         'email' => $userData['email']['email'],
         'birthDate' => $userData['birth_data']['year'] .'-'. $userData['birth_data']['month'].'-'.$userData['birth_data']['day'],
         'gender' => $userData['gender']['gender'],
@@ -82,7 +84,7 @@ class RegistrationValidate
         }
 
         $userData['course'] = $allCourses;
-        var_dump($userData);
+        //var_dump($userData);
     }
 
 //       if (empty($userData['name']) or $userData['name'] == '  ') {
@@ -110,7 +112,17 @@ class RegistrationValidate
 
        return $userData;
 }
-//    public static function SuccessfullImageCount(){
-//
-//    }
+
+
+    public static function successfulLogin(){
+        if (empty($_POST['nickname']['nickname'])) {
+            throw new InvalidArgumentException('Не передан nickname');
+        }
+
+        if (empty($_POST['password']['password'])) {
+            throw new InvalidArgumentException('Не передан password');
+        }
+
+    }
+
 }
