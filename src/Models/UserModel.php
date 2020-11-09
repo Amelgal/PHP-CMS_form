@@ -33,32 +33,32 @@ class UserModel
                 }
             }
         }
-         $this->db->query('INSERT INTO `users` (`name`, `nickname`, `password`, `birth_date`, `gender`, `adress`, `cours`, `country_id`, `comment`,`face_img`,`passport_img`,`code_img`)
-                                  VALUES ( :name, :nickname, :password, :birth_date,  :gender,  :adress, :cours, :country_id, :comment, :face_img, :passport_img, :code_img);',
-             [
-                 ':name' => $form_data['name'],
-                 ':nickname' => $form_data['nickname'],
-                 ':password' => $form_data['password'],
-                 ':birth_date' => $form_data['birthDate'],
-                 ':gender' => $form_data['gender'],
-                 ':adress' => $form_data['address'],
-                 ':cours' => $form_data['course'],
-                 ':country_id' => $form_data['countryId'],
-                 ':comment' => $form_data['comment'],
-                 ':face_img' => $_FILES["image"]["name"][0],
-                 ':passport_img' => $_FILES["image"]["name"][1],
-                 ':code_img' => $_FILES["image"]["name"][2],
-             ], static::class
-         );
-           //var_dump($this->db->getLastInsertId());
-         $this->db->query('INSERT INTO `cron_line` (`user_id`,`email`) 
-                                  VALUES ( :user_id, :email);',
-             [
-                 ':user_id' => $this->db->getLastInsertId(),
-                 ':email' => $form_data['email'],
-             ], static::class
-         );
-
+//         $this->db->query('INSERT INTO `users` (`name`, `nickname`, `password`, `birth_date`, `gender`, `adress`, `cours`, `country_id`, `comment`,`face_img`,`passport_img`,`code_img`)
+//                                  VALUES ( :name, :nickname, :password, :birth_date,  :gender,  :adress, :cours, :country_id, :comment, :face_img, :passport_img, :code_img);',
+//             [
+//                 ':name' => $form_data['name'],
+//                 ':nickname' => $form_data['nickname'],
+//                 ':password' => $form_data['password'],
+//                 ':birth_date' => $form_data['birthDate'],
+//                 ':gender' => $form_data['gender'],
+//                 ':adress' => $form_data['address'],
+//                 ':cours' => $form_data['course'],
+//                 ':country_id' => $form_data['countryId'],
+//                 ':comment' => $form_data['comment'],
+//                 ':face_img' => $_FILES["image"]["name"][0],
+//                 ':passport_img' => $_FILES["image"]["name"][1],
+//                 ':code_img' => $_FILES["image"]["name"][2],
+//             ], static::class
+//         );
+//           var_dump($this->db->getLastInsertId());
+//         $this->db->query('INSERT INTO `cron_line` (`user_id`,`email`)
+//                                  VALUES ( :user_id, :email);',
+//             [
+//                 ':user_id' => $this->db->getLastInsertId(),
+//                 ':email' => $form_data['email'],
+//             ], static::class
+//         );
+//        var_dump($this->db->getLastInsertId());
         return $successfullImage;
     }
 

@@ -4,10 +4,9 @@
 
 namespace Controllers;
 
-use Models\ArticleModel;
 use Models\Articles\Articles;
 
-class MainController extends AbstractController
+class IndexController extends AbstractController
 {
 
     public function ActionMainPage()

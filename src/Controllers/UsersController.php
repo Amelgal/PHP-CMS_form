@@ -5,7 +5,7 @@
 namespace Controllers;
 
 
-use Classes\RegistrationValidate;
+use Classes\ValidateClass;
 use Exceptions\InvalidArgumentException;
 use Models\Users\User;
 //use Controllers\CronController;
@@ -28,7 +28,7 @@ class UsersController extends AbstractController
         if (!empty($_POST)) {
             setcookie("forma", serialize($_POST), 0, '/');
             try {
-                $user = new User(RegistrationValidate::validateForm());
+                $user = new User(ValidateClass::validateForm());
             } catch (InvalidArgumentException $e) {
                 $this->view->renderHtml('users/signUp.php', ['error' => $e->getMessage()]);
                 return;
@@ -45,7 +45,7 @@ class UsersController extends AbstractController
         setcookie('token', null, time()-3600, '/');
         if (!empty($_POST)) {
             try {
-                RegistrationValidate::successfulLogin();
+                ValidateClass::successfulLogin();
                 $login = User::login();
                 setcookie('token', serialize($_POST), 0, '/');
                 //var_dump($_COOKIE);

@@ -7,7 +7,7 @@ error_reporting(0);
 
 use Exceptions\InvalidArgumentException;
 
-class RegistrationValidate
+class ValidateClass
 {
     //private $unvalidated_data;
 
